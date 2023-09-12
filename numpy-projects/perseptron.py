@@ -2,44 +2,31 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-N = 5
-B = 3
+def act(x):
+    return 0 if x <= 0 else 1
 
 
-x1 = np.random.random(N)
-x2 = x1 + [np.random.randint(10) / 10 for i in range(N)] + B
-C1 = [x1, x2]
-print(C1)
+def start(C):
+    x = np.array([C[0], C[1], 1])
+    w1 = [1, 1, -1.5]
+    w2 = [1, 1, -0.5]
+    w_hid = np.array([w1, w2])
+    w_out = np.array([-1, 1, -0.5])
 
-x1 = np.random.random(N)
-x2 = x1 - [np.random.randint(10) / 10 for i in range(N)] - 0.1 + B
-C2 = [x1, x2]
+    sum_hid = np.dot(w_hid, x)
+    sum_out = [act(x) for x in sum_hid]
+    sum_out.append(1)
+    sum_out = np.array(sum_out)
 
-f = [0+B, 1+B]  # границы прямой от 0 до 4 включительно
+    sum = np.dot(sum_out, w_out)
+    y = act(sum)
 
-w2 = 0.5
-w3 = -B * w2
-w = np.array([-w2, w2, w3])
-print('W=', w)
+    return y
 
-for i in range(N):
-    x = np.array([C1[0][i], C1[1][i], 1])
-    print('X=', x)
-    y = np.dot(x, w)
-    print('Y=', y)
-    if y >= 0:
-        print('Class C1')
-    else:
-        print('Class C2')
-
-
-plt.scatter(C1[0][:], C1[1][:], s=10, c='red')
-plt.scatter(C2[0][:], C2[1][:], s=10, c='blue')
-plt.plot(f)
-plt.grid(True)
-plt.show()
 
 C1 = [(1, 0), (0, 1)]
 C2 = [(0, 0), (1, 1)]
-x = np.array([C1[0][0], C1[0][1], 1])
-print(x)
+
+print(start(C1[0]), start(C1[1]))
+print(start(C2[0]), start(C2[1]))
+
